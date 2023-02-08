@@ -24,6 +24,7 @@
           icon="chevron_left"
           unelevated
           fab
+          @click="changeWeek('back')"
         />
         <q-btn
           color="white"
@@ -39,6 +40,7 @@
           icon="chevron_right"
           fab
           unelevated
+          @click="changeWeek('forward')"
         />
       </q-btn-group>
     </q-card-actions>
@@ -59,11 +61,17 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  emits: ["week-change"],
+  setup(props, { emit }) {
     const inFavorite = ref(false);
+
+    const changeWeek = (mode: string) => {
+      emit("week-change", mode);
+    };
     return {
       inFavorite,
       header: props.name,
+      changeWeek,
     };
   },
 });

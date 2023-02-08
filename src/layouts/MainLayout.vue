@@ -13,7 +13,11 @@
 
     <q-page-container>
       <div class="q-mx-sm q-my-sm">
-        <schedule-header :name="result.header" :data="date"></schedule-header>
+        <schedule-header
+          :name="result.header"
+          :data="date"
+          @week-change="changeWeek"
+        ></schedule-header>
         <schedule-list v-if="!isLoading" :schedule="result"></schedule-list>
       </div>
     </q-page-container>
@@ -22,19 +26,23 @@
 
 <script lang="ts">
 import getSchedule from "src/hooks/getSchedule";
-import { ref } from "vue";
-import navBar from "../components/mobile/navigation/Navigation.vue";
-import scheduleList from "../components/LessonList.vue";
+import { ref, watch } from "vue";
 import scheduleHeader from "../components/Header.vue";
+import scheduleList from "../components/LessonList.vue";
+import navBar from "../components/mobile/navigation/Navigation.vue";
 
 export default {
   components: { navBar, scheduleList, scheduleHeader },
   setup() {
     const leftDrawerOpen = ref(false);
-    const date = ref(new Date());
-    const inFavorite = ref(false);
 
-    const { result, isLoading } = getSchedule(date.value);
+    const inFavorite = ref(false);
+    let { result, isLoading, changeWeek, date } = getSchedule();
+
+    watch(date, () => {
+      console.log("Изменение");
+    });
+
     return {
       leftDrawerOpen,
       toggleLeftDrawer() {
@@ -44,6 +52,7 @@ export default {
       inFavorite,
       isLoading,
       date,
+      changeWeek,
     };
   },
 };

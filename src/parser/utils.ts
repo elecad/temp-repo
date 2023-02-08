@@ -10,6 +10,8 @@ import {
   SubHeader,
 } from "./types";
 
+export const millisecondsInDay = 86400000;
+
 const RG =
   /^(\(.*?[^\(]*\))?\s?((?:.*(?=\s\(Э))|(?:.*(?=\s\(с))|.*)\s?(?:\(Э.*(?=\())?(\(с видеотрансляцией\))?.*$/;
 

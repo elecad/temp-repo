@@ -1,4 +1,5 @@
 import { log } from "console";
+import { Search } from "src/parser/types";
 import { ref } from "vue";
 import useScheduleParser from "./useScheduleParser";
 import useSearchParser from "./useSearchParser";

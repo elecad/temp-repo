@@ -1,8 +1,8 @@
 import { Schedule } from "src/parser/types";
-import { ref } from "vue";
+import { millisecondsInDay } from "src/parser/utils";
+import { Ref, ref } from "vue";
 import useParser from "./useScheduleParser";
 
-const millisecondsInDay = 86400000;
 const weekNames = [
   "Воскресенье",
   "Понедельник",
@@ -19,10 +19,21 @@ interface fetchProps {
   type: "group" | "teacher" | "location";
 }
 
-export default function getSchedule(date: Date) {
+export default function getSchedule() {
   const isLoading = ref(true);
   const result = ref<Schedule>({ days: [], header: "" });
   const errors = ref([]);
+  const date = ref(new Date());
+
+  const changeWeek = (event: string) => {
+    const numberDate = date.value.getTime();
+    date.value = new Date(
+      event == "forward"
+        ? numberDate + 7 * millisecondsInDay
+        : numberDate - 7 * millisecondsInDay
+    );
+    console.log(event);
+  };
 
   const useFetch = async ({ id, week, type }: fetchProps) => {
     let paramName = "";
@@ -45,7 +56,7 @@ export default function getSchedule(date: Date) {
   };
 
   const parsing = async () => {
-    const { param: week } = getWeek(date);
+    const { param: week } = getWeek(date.value);
     const text = await useFetch({
       id: "12002108",
       week,
@@ -66,6 +77,8 @@ export default function getSchedule(date: Date) {
     isLoading,
     result,
     errors,
+    changeWeek,
+    date,
   };
 }
 
