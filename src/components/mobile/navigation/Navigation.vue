@@ -1,8 +1,10 @@
 <template>
   <q-header
     class="bg-grey-2 row items-center s-header"
-    style="height: 60px"
+    style="height: 60px; position: absolute"
     elevated
+    reveal
+    :reveal-offset="200"
   >
     <q-toolbar>
       <q-toolbar-title style="font-size: 1.25rem">

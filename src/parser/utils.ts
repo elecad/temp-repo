@@ -164,7 +164,12 @@ function parseTeacher(
 ): [SubHeader[], Promt[], Button] {
   const subHeaders: SubHeader[] = [];
   const promts: Promt[] = [];
-  const button: Button = { icon: "-", active: false, hint: "-", href: "" };
+  const button: Button = {
+    icon: "r_person",
+    active: false,
+    hint: "-",
+    href: "",
+  };
   const t = tr.querySelector("a") as HTMLAnchorElement;
 
   if (tr.children.length == 3 && t.textContent) {
@@ -172,8 +177,8 @@ function parseTeacher(
     const fullName = t ? t.textContent?.trim() : "";
     const id = t ? t.href.split("=")[1] : "";
     const promt = tr.querySelector("img")?.title.trim() ?? "";
-    subHeaders.push({ icon: "-", text: `${fullName} (${status})` });
-    promts.push({ icon: "-", text: promt });
+    subHeaders.push({ icon: "r_person", text: `${fullName} (${status})` });
+    promts.push({ icon: "", text: promt });
     button.active = true;
     button.href = id;
   }
@@ -186,7 +191,12 @@ function parseLocation(
 ): [SubHeader[], Promt[], Chip[], Button] {
   const subHeaders: SubHeader[] = [];
   const promts: Promt[] = [];
-  const button: Button = { icon: "-", active: false, hint: "-", href: "" };
+  const button: Button = {
+    icon: "r_location_on",
+    active: false,
+    hint: "-",
+    href: "",
+  };
   const chips: Chip[] = [];
 
   const l = tr.querySelector("a") as HTMLAnchorElement;
@@ -206,14 +216,17 @@ function parseLocation(
 
       const name = tr.textContent?.trim().slice(0, -1);
 
-      subHeaders.push({ icon: "-", text: `${name} ${area}` });
-      promts.push({ icon: "-", text: adress });
+      subHeaders.push({ icon: "r_location_on", text: `${name} ${area}` });
+      promts.push({ icon: "r_location_on", text: adress });
       button.active = true;
       button.href = id;
     }
   } else {
     // Онлайн / МООК
-    subHeaders.push({ icon: "-", text: tr.textContent?.trim() ?? "" });
+    subHeaders.push({
+      icon: "r_location_on",
+      text: tr.textContent?.trim() ?? "",
+    });
     chips.push({ text: "Онлайн", color: "-" });
   }
 

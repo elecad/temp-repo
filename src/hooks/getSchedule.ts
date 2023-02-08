@@ -53,6 +53,7 @@ export default function getSchedule(date: Date) {
     isLoading.value = false;
     try {
       result.value = useParser({ html: text });
+      console.log(useParser({ html: text }));
     } catch (e) {
       console.error(e);
     }
