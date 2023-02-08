@@ -1,0 +1,49 @@
+<!-- <div class="bottom-container">
+          <q-card class="q-my-sm bg-white weekdays-card shadow-10">
+            <q-card-section class="row items-center justify-around q-py-sm">
+              <q-btn
+                unelevated
+                color="white"
+                text-color="black"
+                label="ПН"
+                class="week-button"
+              />
+              <q-btn
+                unelevated
+                color="indigo"
+                text-color="white"
+                label="ВТ"
+                class="text-bold week-button"
+              />
+              <q-btn
+                unelevated
+                color="white"
+                text-color="black"
+                label="СР"
+                class="week-button"
+              />
+              <q-btn
+                unelevated
+                color="white"
+                text-color="black"
+                label="ЧТ"
+                class="week-button"
+              />
+              <q-btn
+                unelevated
+                color="grey-4"
+                text-color="black"
+                label="ПТ"
+                disable
+                class="week-button"
+              />
+              <q-btn
+                unelevated
+                color="white"
+                label="СБ"
+                class="week-button"
+                text-color="black"
+              />
+            </q-card-section>
+          </q-card>
+        </div> -->

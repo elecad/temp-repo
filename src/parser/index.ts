@@ -1,4 +1,5 @@
 import { log } from "console";
+import { Schedule, Search } from "./types";
 import { capitalizeFirstLetter, parseDayHeader, parseLesson } from "./utils";
 
 export function parse(tables: NodeListOf<HTMLTableElement>) {

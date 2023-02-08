@@ -1,16 +1,15 @@
-// @ts-ignore: Unreachable code error
-interface Schedule {
+export interface Schedule {
   header: string;
   days: Day[];
 }
 
-interface Day {
+export interface Day {
   date: string;
   dayWeekName: string;
   pairs: Pairs[];
 }
 
-interface Pairs {
+export interface Pairs {
   pairNumber: number;
   start: Date;
   end: Date;
@@ -18,7 +17,7 @@ interface Pairs {
   lessons: Card[];
 }
 
-interface Card {
+export interface Card {
   chips: Chip[];
   header: Header;
   subHeaders: SubHeader[];
@@ -27,36 +26,36 @@ interface Card {
   courses: Course[];
 }
 
-interface Chip {
+export interface Chip {
   color: string;
   text: string;
 }
 
-interface Header {
+export interface Header {
   name: string;
   subname: string;
 }
 
-interface SubHeader {
+export interface SubHeader {
   icon: string;
   text: string;
 }
 
-interface Promt extends SubHeader {}
+export interface Promt extends SubHeader {}
 
-interface Button {
+export interface Button {
   icon: string;
   href: string;
   hint: string;
   active: boolean;
 }
 
-interface Course {
+export interface Course {
   name: string;
   href: string;
 }
 
-interface Search {
+export interface Search {
   type: "g" | "t" | "l";
   id: string;
   name: string;

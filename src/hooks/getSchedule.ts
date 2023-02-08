@@ -1,3 +1,4 @@
+import { Schedule } from "src/parser/types";
 import { ref } from "vue";
 import useParser from "./useScheduleParser";
 
@@ -53,7 +54,7 @@ export default function getSchedule(date: Date) {
     isLoading.value = false;
     try {
       result.value = useParser({ html: text });
-      console.log(useParser({ html: text }));
+      // console.log(useParser({ html: text }));
     } catch (e) {
       console.error(e);
     }

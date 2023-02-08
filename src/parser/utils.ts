@@ -1,3 +1,15 @@
+import {
+  Button,
+  Card,
+  Chip,
+  Course,
+  Day,
+  Header,
+  Pairs,
+  Promt,
+  SubHeader,
+} from "./types";
+
 const RG =
   /^(\(.*?[^\(]*\))?\s?((?:.*(?=\s\(Э))|(?:.*(?=\s\(с))|.*)\s?(?:\(Э.*(?=\())?(\(с видеотрансляцией\))?.*$/;
 
@@ -178,7 +190,7 @@ function parseTeacher(
     const id = t ? t.href.split("=")[1] : "";
     const promt = tr.querySelector("img")?.title.trim() ?? "";
     subHeaders.push({ icon: "r_person", text: `${fullName} (${status})` });
-    promts.push({ icon: "", text: promt });
+    promts.push({ icon: "r_account_circle", text: promt });
     button.active = true;
     button.href = id;
   }
@@ -217,7 +229,7 @@ function parseLocation(
       const name = tr.textContent?.trim().slice(0, -1);
 
       subHeaders.push({ icon: "r_location_on", text: `${name} ${area}` });
-      promts.push({ icon: "r_location_on", text: adress });
+      promts.push({ icon: "r_not_listed_location", text: adress });
       button.active = true;
       button.href = id;
     }
@@ -236,13 +248,21 @@ function parseLocation(
 function parseGroup(tr: HTMLTableCellElement): [SubHeader[], Promt[], Button] {
   const subHeaders: SubHeader[] = [];
   const promts: Promt[] = [];
-  const button: Button = { icon: "-", active: false, hint: "-", href: "" };
+  const button: Button = {
+    icon: "r_groups",
+    active: false,
+    hint: "-",
+    href: "",
+  };
 
   const a = tr.querySelector("a") as HTMLAnchorElement;
   if (a.textContent) {
     const t = a.textContent?.trim();
-    subHeaders.push({ icon: "-", text: t });
-    promts.push({ icon: "-", text: tr.querySelector("img")?.title ?? "" });
+    subHeaders.push({ icon: "r_groups", text: t });
+    promts.push({
+      icon: "r_groups",
+      text: tr.querySelector("img")?.title ?? "",
+    });
     button.active = true;
     button.href = t;
   }
