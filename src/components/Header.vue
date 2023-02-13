@@ -33,6 +33,7 @@
           icon-right="r_edit_calendar"
           unelevated
           class="text-bold"
+          @click="alert = !alert"
         />
         <q-btn
           color="white"
@@ -53,51 +54,19 @@
             flat
             first-day-of-week="1"
             mask="DD.MM.YYYY"
-            :locale="{
-              days: [
-                'Понедельник',
-                'Вторник',
-                'Среда',
-                'Четверг',
-                'Пятница',
-                'Суббота',
-                'Воскресенье',
-              ],
-              daysShort: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-              months: [
-                'Январь',
-                'Февраль',
-                'Март',
-                'Апрель',
-                'Май',
-                'Июнь',
-                'Июль',
-                'Август',
-                'Сентябрь',
-                'Октябрь',
-                'Ноябрь',
-                'Декабрь',
-              ],
-              monthsShort: [
-                'Янв',
-                'Фев',
-                'Мар',
-                'Апр',
-                'Мая',
-                'Июн',
-                'Июл',
-                'Авг',
-                'Сен',
-                'Окт',
-                'Ноя',
-                'Дек',
-              ],
-            }"
+            :locale="locale"
+            no-unset
           />
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
+          <q-btn
+            flat
+            label="OK"
+            color="primary"
+            v-close-popup
+            @click="setNewDate"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -119,13 +88,58 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["week-change"],
+  emits: ["week-change", "date-change"],
   setup(props, { emit }) {
     const inFavorite = ref(false);
-    const alert = ref(true);
+    const alert = ref(false);
     const selectedDate = ref(props.date.toLocaleDateString());
     const changeWeek = (mode: string) => {
       emit("week-change", mode);
+    };
+
+    const setNewDate = () => {
+      emit("date-change", selectedDate.value);
+    };
+
+    const locale = {
+      days: [
+        "Понедельник",
+        "Вторник",
+        "Среда",
+        "Четверг",
+        "Пятница",
+        "Суббота",
+        "Воскресенье",
+      ],
+      daysShort: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+      months: [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь",
+      ],
+      monthsShort: [
+        "Янв",
+        "Фев",
+        "Мар",
+        "Апр",
+        "Мая",
+        "Июн",
+        "Июл",
+        "Авг",
+        "Сен",
+        "Окт",
+        "Ноя",
+        "Дек",
+      ],
     };
     const calenderLabel = computed(() => getCalenderLabel(props.date));
     return {
@@ -135,6 +149,8 @@ export default defineComponent({
       calenderLabel,
       alert,
       selectedDate,
+      locale,
+      setNewDate,
     };
   },
 });

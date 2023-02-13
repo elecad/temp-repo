@@ -17,6 +17,7 @@
           :name="result.header"
           :date="date"
           @week-change="changeWeek"
+          @date-change="setNewDate"
         ></schedule-header>
         <schedule-list v-if="!isLoading" :schedule="result"></schedule-list>
       </div>
@@ -37,7 +38,7 @@ export default {
     const leftDrawerOpen = ref(false);
 
     const inFavorite = ref(false);
-    let { result, isLoading, changeWeek, date } = getSchedule();
+    let { result, isLoading, changeWeek, setNewDate, date } = getSchedule();
 
     return {
       leftDrawerOpen,
@@ -50,6 +51,7 @@ export default {
       date,
       changeWeek,
       alert,
+      setNewDate,
     };
   },
 };

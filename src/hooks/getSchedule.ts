@@ -26,6 +26,13 @@ export default function getSchedule() {
   const errors = ref([]);
   const date = ref(new Date());
 
+  const setNewDate = (str: string) => {
+    console.log(str);
+    const [day, month, year] = str.split(".");
+    date.value = new Date(`${year}-${month}-${day}`);
+    parsing();
+  };
+
   const changeWeek = (event: string) => {
     const numberDate = date.value.getTime();
     date.value = new Date(
@@ -60,13 +67,15 @@ export default function getSchedule() {
   const parsing = async () => {
     const { param: week } = getWeek(date.value);
     const text = await useFetch({
-      id: "12002108",
+      id: "12001902",
       week,
       type: "group",
     });
     isLoading.value = false;
+
     try {
       result.value = useParser({ html: text });
+
       // console.log(useParser({ html: text }));
     } catch (e) {
       console.error(e);
@@ -80,6 +89,7 @@ export default function getSchedule() {
     result,
     errors,
     changeWeek,
+    setNewDate,
     date,
   };
 }

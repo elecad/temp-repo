@@ -11,7 +11,14 @@
 
     <div v-for="pair in day.pairs" class="q-mb-md">
       <q-card v-for="lesson in pair.lessons" class="q-my-sm">
-        <q-expansion-item class="bg-white" group="lesson">
+        <q-expansion-item
+          class="bg-white"
+          :class="{
+            'today-lesson': day.date == now.toLocaleDateString(),
+            'now-lesson': +pair.start < +now && +now < +pair.end,
+          }"
+          group="lesson"
+        >
           <template v-slot:header>
             <div class="column items-center justify-center">
               <div class="start-time text-subtitle1">
@@ -102,6 +109,7 @@
 </template>
 
 <script lang="ts">
+import { log } from "console";
 import { defineComponent, PropType, ref } from "vue";
 import { Schedule } from "../parser/types";
 
@@ -114,10 +122,67 @@ export default defineComponent({
   },
   setup(props) {
     const inFavorite = ref(false);
-    console.log(props);
-    return { inFavorite, schedule: props.schedule };
+
+    const now = ref(new Date());
+    // console.log(props.schedule);
+
+    const findNowAndTodayLesson = () => {
+      // now.value = new Date("2023-02-13T08:20:54.882Z");
+      // console.log(
+      //   "Дата на самом деле:",
+      //   now.value.toLocaleDateString(),
+      //   now.value.toLocaleTimeString()
+      // );
+
+      console.log("Обновление данных!");
+
+      now.value = new Date();
+
+      let delay = +now.value;
+      for (const day of props.schedule.days) {
+        for (const pair of day.pairs) {
+          const deltaStart = +pair.start - +now.value;
+          const deltaEnd = +pair.end - +now.value;
+
+          if (deltaStart > 0) {
+            if (deltaStart < delay) {
+              delay = deltaStart;
+            }
+            if (deltaEnd < delay) {
+              delay = deltaEnd;
+            }
+          }
+        }
+      }
+      console.log("Следующее обновление через: ", delay);
+      const temp = new Date(+now.value + delay);
+
+      console.log(
+        "Дата: ",
+        temp.toLocaleDateString(),
+        temp.toLocaleTimeString()
+      );
+
+      setTimeout(findNowAndTodayLesson, delay);
+    };
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState == "visible") {
+        findNowAndTodayLesson();
+      }
+    });
+
+    findNowAndTodayLesson();
+    return { inFavorite, schedule: props.schedule, now };
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.today-lesson {
+  border-inline-start: 5px solid rgba(63, 81, 181, 0.4);
+}
+.now-lesson {
+  border-inline-start: 6px solid #3f51b5;
+}
+</style>
