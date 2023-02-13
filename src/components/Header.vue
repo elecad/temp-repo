@@ -29,7 +29,7 @@
         <q-btn
           color="white"
           text-color="calender"
-          label="30 Янв - 5 Фев"
+          :label="calenderLabel"
           icon-right="r_edit_calendar"
           unelevated
           class="text-bold"
@@ -44,15 +44,73 @@
         />
       </q-btn-group>
     </q-card-actions>
+
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section class="q-pa-none">
+          <q-date
+            v-model="selectedDate"
+            flat
+            first-day-of-week="1"
+            mask="DD.MM.YYYY"
+            :locale="{
+              days: [
+                'Понедельник',
+                'Вторник',
+                'Среда',
+                'Четверг',
+                'Пятница',
+                'Суббота',
+                'Воскресенье',
+              ],
+              daysShort: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+              months: [
+                'Январь',
+                'Февраль',
+                'Март',
+                'Апрель',
+                'Май',
+                'Июнь',
+                'Июль',
+                'Август',
+                'Сентябрь',
+                'Октябрь',
+                'Ноябрь',
+                'Декабрь',
+              ],
+              monthsShort: [
+                'Янв',
+                'Фев',
+                'Мар',
+                'Апр',
+                'Мая',
+                'Июн',
+                'Июл',
+                'Авг',
+                'Сен',
+                'Окт',
+                'Ноя',
+                'Дек',
+              ],
+            }"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
+import { getCalenderLabel } from "../hooks/utils";
 
 export default defineComponent({
   props: {
-    data: {
+    date: {
       type: Date,
       required: true,
     },
@@ -64,14 +122,19 @@ export default defineComponent({
   emits: ["week-change"],
   setup(props, { emit }) {
     const inFavorite = ref(false);
-
+    const alert = ref(true);
+    const selectedDate = ref(props.date.toLocaleDateString());
     const changeWeek = (mode: string) => {
       emit("week-change", mode);
     };
+    const calenderLabel = computed(() => getCalenderLabel(props.date));
     return {
       inFavorite,
       header: props.name,
       changeWeek,
+      calenderLabel,
+      alert,
+      selectedDate,
     };
   },
 });

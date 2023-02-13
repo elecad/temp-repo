@@ -2,6 +2,7 @@ import { Schedule } from "src/parser/types";
 import { millisecondsInDay } from "src/parser/utils";
 import { Ref, ref } from "vue";
 import useParser from "./useScheduleParser";
+import { getWeek } from "./utils";
 
 const weekNames = [
   "Воскресенье",
@@ -32,7 +33,7 @@ export default function getSchedule() {
         ? numberDate + 7 * millisecondsInDay
         : numberDate - 7 * millisecondsInDay
     );
-    console.log(event);
+    parsing();
   };
 
   const useFetch = async ({ id, week, type }: fetchProps) => {
@@ -51,6 +52,7 @@ export default function getSchedule() {
     const url = `/${type}?${paramName}=${id}&week=${week}`;
 
     const response = await fetch(url);
+    isLoading.value = true;
     return await response.text();
     // return saveGroupHtml;
   };
@@ -80,25 +82,4 @@ export default function getSchedule() {
     changeWeek,
     date,
   };
-}
-
-interface Week {
-  monday: Date;
-  sunday: Date;
-  param: string;
-}
-
-function getWeek(date: Date): Week {
-  const weekdayPosition = date.getDay();
-
-  const sunday = new Date(
-    date.getTime() - weekdayPosition * millisecondsInDay + 7 * millisecondsInDay
-  );
-  const monday = new Date(sunday.getTime() - 6 * millisecondsInDay);
-
-  const param =
-    monday.toLocaleDateString().replace(/[.]/g, "") +
-    sunday.toLocaleDateString().replace(/[.]/g, "");
-
-  return { sunday, monday, param };
 }
