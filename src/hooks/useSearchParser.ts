@@ -8,7 +8,7 @@ export default function useSearchParser({ html }: parserProps) {
     ".typo-page > h2, table.search"
   );
 
-  if (!nodes.length)
-    throw Error("Отсутствие таблиц и заголовков в ответе сайта");
-  return parseSearch(nodes);
+  // if (!nodes.length)
+  //   throw Error("Отсутствие таблиц и заголовков в ответе сайта");
+  return nodes.length ? parseSearch(nodes) : [];
 }

@@ -28,17 +28,25 @@
 <script lang="ts">
 import getSchedule from "src/hooks/getSchedule";
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import scheduleHeader from "../components/Header.vue";
 import scheduleList from "../components/LessonList.vue";
 import navBar from "../components/mobile/navigation/Navigation.vue";
+import getTypePage from "src/hooks/getTypePage";
 
 export default {
   components: { navBar, scheduleList, scheduleHeader },
   setup() {
+    const router = useRouter();
+    const { params, path } = useRoute();
     const leftDrawerOpen = ref(false);
-
+    const type = getTypePage(path);
+    const id = params.id as string;
     const inFavorite = ref(false);
-    let { result, isLoading, changeWeek, setNewDate, date } = getSchedule();
+    let { result, isLoading, changeWeek, setNewDate, date } = getSchedule({
+      id: id,
+      type: type,
+    });
 
     return {
       leftDrawerOpen,

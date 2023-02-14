@@ -46,7 +46,7 @@ module.exports = configure(function (/* ctx */) {
         node: "node16",
       },
 
-      vueRouterMode: "hash", // available values: 'hash', 'history'
+      vueRouterMode: "history", // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -85,8 +85,20 @@ module.exports = configure(function (/* ctx */) {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/search/, ""),
         },
+        "/teacher": {
+          target:
+            "https://bsuedu.ru/bsu/education/schedule/teachers/show_schedule.php",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/teacher/, ""),
+        },
+        "/location": {
+          target:
+            "https://bsuedu.ru/bsu/education/schedule/auditories/show_schedule.php",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/location/, ""),
+        },
       },
-      // open: true, // opens browser window automatically
+      open: false, // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework

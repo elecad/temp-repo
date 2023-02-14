@@ -146,6 +146,7 @@ function parseType(tr: HTMLTableCellElement): Chip {
 
 function parseDiscipline(tr: HTMLTableCellElement): [Header, Course[], Chip[]] {
   const text = tr.textContent?.trim() ?? "";
+
   const rg = RG.exec(text);
 
   const header: Header = { name: "", subname: "" };

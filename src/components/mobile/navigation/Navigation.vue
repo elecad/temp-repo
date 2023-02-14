@@ -5,7 +5,36 @@
     elevated
     reveal
   >
-    <q-toolbar>
+    <q-toolbar v-if="isSearch">
+      <q-btn
+        @click="isSearch = !isSearch"
+        class="q-mr-xs"
+        flat
+        round
+        dense
+        icon="arrow_back"
+        color="grey-7"
+        padding="10px"
+      />
+
+      <div class="search-input">
+        <q-input
+          filled
+          v-model="searchText"
+          :loading="isLoading"
+          @update:model-value="searchFunction"
+        />
+        <q-menu fit separate-close-popup no-focus>
+          <q-list v-for="el in result">
+            <q-item clickable v-ripple @click="selectItem(el)">
+              <q-item-section>{{ el.name }}</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </div>
+    </q-toolbar>
+
+    <q-toolbar v-else>
       <q-toolbar-title style="font-size: 1.25rem">
         <q-avatar>
           <q-icon
@@ -26,19 +55,50 @@
         padding="10px"
       />
 
-      <dropdown-button></dropdown-button>
+      <dropdown-button @dropdown-clck="dropdownButtonClick"></dropdown-button>
     </q-toolbar>
   </q-header>
 </template>
 
-<script>
+<script lang="ts">
+import getSearch from "src/hooks/getSearch";
+import { Search } from "src/parser/types";
+import { ref } from "vue";
 import dropdownButton from "./dropdown-button.vue";
 
 export default {
   name: "navbar",
   components: { dropdownButton },
   setup() {
-    return {};
+    const isSearch = ref(false);
+    const searchText = ref("");
+
+    const { isLoading, result, runSearch } = getSearch();
+
+    const dropdownButtonClick = (button: string) => {
+      if (button == "search") {
+        isSearch.value = !isSearch.value;
+      }
+    };
+
+    const searchFunction = async () => {
+      await runSearch(searchText.value);
+      console.log(result.value);
+    };
+
+    const selectItem = (selected: Search) => {
+      console.log(selected);
+      // Переход
+    };
+    return {
+      isSearch,
+      dropdownButtonClick,
+      searchText,
+      searchFunction,
+      result,
+      isLoading,
+      selectItem,
+    };
   },
 };
 </script>
@@ -65,5 +125,9 @@ export default {
   padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 20px;
+}
+
+.search-input {
+  width: 100%;
 }
 </style>

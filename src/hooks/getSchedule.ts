@@ -14,13 +14,20 @@ const weekNames = [
   "Суббота",
 ];
 
+export type Type = "group" | "teacher" | "location";
+
 interface fetchProps {
   id: string;
   week: string;
   type: "group" | "teacher" | "location";
 }
 
-export default function getSchedule() {
+interface scheduleProps {
+  id: string;
+  type: "group" | "teacher" | "location";
+}
+
+export default function getSchedule({ id, type }: scheduleProps) {
   const isLoading = ref(true);
   const result = ref<Schedule>({ days: [], header: "" });
   const errors = ref([]);
@@ -67,9 +74,9 @@ export default function getSchedule() {
   const parsing = async () => {
     const { param: week } = getWeek(date.value);
     const text = await useFetch({
-      id: "12001902",
+      id,
       week,
-      type: "group",
+      type,
     });
     isLoading.value = false;
 
