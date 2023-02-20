@@ -55,7 +55,9 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        NODE_TLS_REJECT_UNAUTHORIZED: 0,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -72,7 +74,6 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      // https: true
       proxy: {
         "/group": {
           target:

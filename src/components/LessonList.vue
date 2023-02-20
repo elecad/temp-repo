@@ -87,6 +87,7 @@
                     color="indigo"
                     :icon="button.icon"
                     :disable="!button.active"
+                    :href="button.href"
                   />
                 </div>
               </div>
@@ -97,6 +98,7 @@
                     class="text-bold q-mr-xs q-mb-xs"
                     color="indigo"
                     :label="course.name"
+                    :href="course.href"
                   />
                 </div>
               </div>
@@ -109,7 +111,6 @@
 </template>
 
 <script lang="ts">
-import { log } from "console";
 import { defineComponent, PropType, ref } from "vue";
 import { Schedule } from "../parser/types";
 
@@ -139,6 +140,7 @@ export default defineComponent({
       now.value = new Date();
 
       let delay = +now.value;
+      let delayNotification = +now.value;
       for (const day of props.schedule.days) {
         for (const pair of day.pairs) {
           const deltaStart = +pair.start - +now.value;
@@ -151,19 +153,32 @@ export default defineComponent({
             if (deltaEnd < delay) {
               delay = deltaEnd;
             }
+            if (deltaStart < delayNotification) {
+              delayNotification = deltaStart;
+            }
           }
         }
       }
-      console.log("Следующее обновление через: ", delay);
-      const temp = new Date(+now.value + delay);
+      // console.log("Следующее обновление через: ", delay);
+      // const temp = new Date(+now.value + delay);
 
-      console.log(
-        "Дата: ",
-        temp.toLocaleDateString(),
-        temp.toLocaleTimeString()
-      );
+      // console.log(
+      //   "Дата: ",
+      //   temp.toLocaleDateString(),
+      //   temp.toLocaleTimeString()
+      // );
+      // =================
+      // console.log("Следующее оповещение через: ", delayNotification);
+      // const temp = new Date(+now.value + delayNotification);
+
+      // console.log(
+      //   "Дата: ",
+      //   temp.toLocaleDateString(),
+      //   temp.toLocaleTimeString()
+      // );
 
       setTimeout(findNowAndTodayLesson, delay);
+      setTimeout(notification, delayNotification);
     };
 
     document.addEventListener("visibilitychange", () => {
@@ -172,7 +187,22 @@ export default defineComponent({
       }
     });
 
+    const notification = () => {
+      Notification.requestPermission(function (permission) {
+        // Если пользователь разрешил, то создаём уведомление
+        if (permission === "granted") {
+          const options: NotificationOptions = {
+            icon: "../icons/android-chrome-192x192.png",
+            body: "Начинается новое занятие",
+          };
+          var notification = new Notification("Расписание", options);
+        }
+      });
+    };
+
+    notification();
     findNowAndTodayLesson();
+
     return { inFavorite, schedule: props.schedule, now };
   },
 });

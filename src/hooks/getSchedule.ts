@@ -33,6 +33,11 @@ export default function getSchedule({ id, type }: scheduleProps) {
   const errors = ref([]);
   const date = ref(new Date());
 
+  if (date.value.getDay() == 0) {
+    const numberDate = date.value.getTime();
+    date.value = new Date(numberDate + 7 * millisecondsInDay);
+  }
+
   const setNewDate = (str: string) => {
     console.log(str);
     const [day, month, year] = str.split(".");

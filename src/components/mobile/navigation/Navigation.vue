@@ -64,12 +64,14 @@
 import getSearch from "src/hooks/getSearch";
 import { Search } from "src/parser/types";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import dropdownButton from "./dropdown-button.vue";
 
 export default {
   name: "navbar",
   components: { dropdownButton },
   setup() {
+    const router = useRouter();
     const isSearch = ref(false);
     const searchText = ref("");
 
@@ -83,11 +85,11 @@ export default {
 
     const searchFunction = async () => {
       await runSearch(searchText.value);
-      console.log(result.value);
     };
 
     const selectItem = (selected: Search) => {
       console.log(selected);
+      router.push({ path: `/${selected.type}/${selected.id}` });
       // Переход
     };
     return {

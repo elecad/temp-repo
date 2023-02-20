@@ -195,7 +195,7 @@ function parseTeacher(
     subHeaders.push({ icon: "r_person", text: `${fullName} (${status})` });
     promts.push({ icon: "r_account_circle", text: promt });
     button.active = true;
-    button.href = id;
+    button.href = `/t/${id}`;
   }
 
   return [subHeaders, promts, button];
@@ -234,7 +234,7 @@ function parseLocation(
       subHeaders.push({ icon: "r_location_on", text: `${name} ${area}` });
       promts.push({ icon: "r_not_listed_location", text: adress });
       button.active = true;
-      button.href = id;
+      button.href = `/l/${id}`;
     }
   } else {
     // Онлайн / МООК
@@ -267,7 +267,7 @@ function parseGroup(tr: HTMLTableCellElement): [SubHeader[], Promt[], Button] {
       text: tr.querySelector("img")?.title ?? "",
     });
     button.active = true;
-    button.href = t;
+    button.href = `/g/${t}`;
   }
 
   return [subHeaders, promts, button];
